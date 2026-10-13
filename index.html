@@ -7,6 +7,12 @@
 <meta name="description" content="Tu turista favorito tiene una pregunta muy seria para ti 👀">
 <meta property="og:title" content="Tengo una pregunta muy seria para ti 👀">
 <meta property="og:description" content="De parte de tu turista favorito 🧳📸">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://henryaliceahe-glitch.github.io/tours-valeria/">
+<meta property="og:image" content="https://henryaliceahe-glitch.github.io/tours-valeria/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#F2711C">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧳</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -231,6 +237,39 @@
   .slot-botones { display: grid; gap: 12px; }
   .slot-botones[hidden] { display: none; }
 
+  /* Cuenta regresiva, calendario y pasaporte */
+  .regreso { font-weight: 800; color: var(--calabaza-osc); margin-bottom: 6px; }
+  .regreso[hidden] { display: none; }
+  .cuenta {
+    margin: 0 16px 14px; padding: 10px 12px; border-radius: 14px; background: var(--rosado-suave);
+    font-weight: 800; font-size: 15px; text-align: center;
+  }
+  .cuenta:empty { display: none; }
+  .calendario { margin: 22px 0 6px; }
+  .cal-botones { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .cal-botones .btn { font-size: 15px; padding: 12px 8px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; }
+  .pasaporte {
+    margin: 26px 0 8px; background: #2F2A5A; color: var(--crema); border-radius: 22px;
+    padding: 18px 14px 20px; box-shadow: 6px 6px 0 var(--morado); text-align: center;
+  }
+  .pasaporte-top { font-family: "Chewy", cursive; font-size: 26px; color: var(--dorado); }
+  .pasaporte-sub { font-size: 14px; opacity: .85; margin: 4px 0 14px; }
+  .sellos { display: grid; gap: 14px; }
+  .sello-pas {
+    display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: center; text-align: left;
+    background: #FFF8EC; color: var(--morado); border-radius: 16px; padding: 12px;
+  }
+  .sello-pas p { font-size: 14px; line-height: 1.4; }
+  .estampa {
+    width: 100px; height: 100px; border-radius: 50%; border: 3px double var(--color); color: var(--color);
+    display: grid; place-items: center; align-content: center; text-align: center; gap: 1px;
+    transform: rotate(var(--rot)); outline: 2px dashed var(--color); outline-offset: -10px;
+  }
+  .estampa span { font-size: 26px; line-height: 1; }
+  .estampa b { font-size: 11px; line-height: 1.1; text-transform: uppercase; letter-spacing: .04em; max-width: 74px; }
+  .estampa small { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+  .estampa.proximo { opacity: .75; border-style: dashed; }
+
   .nota {
     background: var(--rosado-suave); border-radius: 16px; padding: 12px 14px; margin: 18px 0;
     font-weight: 700; font-size: 16px;
@@ -386,6 +425,7 @@
       <div class="globo">💛 ¡Listo!</div>
     </div>
     <h1>Itinerario confirmado ✈️</h1>
+    <p class="regreso" id="regreso" hidden>¡Bienvenida de vuelta, guía! 👋 Tu itinerario sigue en pie.</p>
 
     <div class="pase">
       <div class="pase-top"><span>🧳 Pase de abordar</span><span>Vuelo VAL-💛</span></div>
@@ -396,6 +436,7 @@
         <div class="campo"><span>Día</span><b id="paseDia"></b></div>
         <div class="campo"><span>Hora</span><b id="paseHora"></b></div>
       </div>
+      <div class="cuenta" id="cuenta" aria-live="off"></div>
       <div class="corte"></div>
       <div class="barras" aria-hidden="true"></div>
     </div>
@@ -405,6 +446,34 @@
     <p class="texto">Ya tengo unas ganas brutales de verte otra vez. Ve contando las horas, que yo ya empecé 😌</p>
 
     <a class="btn whatsapp" id="btnWhatsapp" href="#" target="_blank" rel="noopener noreferrer">💬 Confírmamelo por WhatsApp</a>
+
+    <div class="calendario">
+      <p class="grupo-titulo">📅 Guárdalo en tu calendario</p>
+      <div class="cal-botones">
+        <a class="btn blanco" id="btnGoogleCal" href="#" target="_blank" rel="noopener noreferrer">Google Calendar</a>
+        <button class="btn blanco" id="btnIcs">iPhone / otro</button>
+      </div>
+    </div>
+
+    <div class="pasaporte">
+      <div class="pasaporte-top">🛂 Pasaporte del turista</div>
+      <p class="pasaporte-sub">Sellos oficiales de los lugares a los que la guía me ha llevado</p>
+      <div class="sellos">
+        <div class="sello-pas">
+          <div class="estampa" style="--rot:-6deg; --color:#C0392B"><span>🍦</span><b>Viejo San Juan</b><small>Visitado ✓</small></div>
+          <p>Mantecados de pie porque no había ni un sitio pa' sentarse. Ni falta que hizo: la compañía estaba brutal.</p>
+        </div>
+        <div class="sello-pas">
+          <div class="estampa" style="--rot:5deg; --color:#2E6FB7"><span>🎳</span><b>Bolera</b><small>Visitado ✓</small></div>
+          <p>Récord histórico: la guía por fin le ganó al turista. 🏆<br><i>"Tú siempre me ganas, ya era hora que te ganara."</i><br>(Revancha pendiente 😤)</p>
+        </div>
+        <div class="sello-pas">
+          <div class="estampa proximo" style="--rot:-3deg; --color:#F2711C"><span id="selloEmoji">✈️</span><b>Próximo sello</b><small>Pendiente ⏳</small></div>
+          <p><b id="selloNombre">Próximo destino</b><br>Este sello lo ponemos este fin de semana 😌</p>
+        </div>
+      </div>
+    </div>
+
     <button class="btn-texto" id="btnCambiar">← Cambiar algo</button>
   </section>
 </main>
@@ -601,6 +670,7 @@
   btnSi.addEventListener("click", () => {
     btnNo.remove(); // adiós, botón "No" 👋
     lluvia(["💛", "🎃", "🧡", "💕", "🍂", "👻", "✨"], 60);
+    try { navigator.vibrate && navigator.vibrate([80, 50, 80, 50, 200]); } catch (e) {}
     mostrar("p2b");
   });
 
@@ -767,6 +837,7 @@
         slotNoche.hidden = !secreto;
         slotBotones.hidden = false;
         lluvia([ganador.emoji, "✨", "💛"], 20);
+        try { navigator.vibrate && navigator.vibrate(150); } catch (e) {}
         return;
       }
       paso++;
@@ -875,24 +946,136 @@
   // "a la 1:00 PM" pero "a las 8:00 PM"
   const aLas = h => (h.startsWith("1:") ? "a la " : "a las ") + h;
 
-  btnConfirmar.addEventListener("click", () => {
-    const { plan, dia, franja, horaExacta } = estado;
-    if (!plan || !dia || !horaExacta) return;
+  // Vibración cortita (Android; el iPhone la ignora)
+  const vibrar = patron => { try { navigator.vibrate && navigator.vibrate(patron); } catch (e) {} };
+
+  // Próximo viernes/sábado/domingo a esa hora (si ya pasó esta semana, la que viene)
+  function fechaDeCita(dia, horaExacta) {
+    const numDia = { viernes: 5, "sábado": 6, domingo: 0 }[dia];
+    const [, h, m, ampm] = horaExacta.match(/(\d+):(\d+) (AM|PM)/);
+    const horas = Number(h) % 12 + (ampm === "PM" ? 12 : 0);
+    // Siempre en hora de Puerto Rico (UTC−4 todo el año), sin importar la zona del celular
+    const ahora = new Date();
+    const pr = new Date(ahora.getTime() - 4 * 36e5);
+    const salto = (numDia - pr.getUTCDay() + 7) % 7;
+    let f = new Date(Date.UTC(pr.getUTCFullYear(), pr.getUTCMonth(), pr.getUTCDate() + salto, horas + 4, Number(m)));
+    if (f < ahora) f = new Date(f.getTime() + 7 * 864e5);
+    return f;
+  }
+  const fechaBonita = f => f.toLocaleDateString("es-PR", { timeZone: "America/Puerto_Rico", weekday: "long", day: "numeric", month: "long" }).replace(",", "");
+
+  // Cuenta regresiva en el pase de abordar
+  let reloj = null;
+  function cuentaRegresiva(fecha) {
+    const el = document.getElementById("cuenta");
+    clearInterval(reloj);
+    const pintar = () => {
+      const ms = fecha - new Date();
+      if (ms <= 0) { el.textContent = "✈️ ¡Hoy es el despegue! El turista ya va de camino 🚗"; clearInterval(reloj); return; }
+      const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
+      const partes = [];
+      if (d) partes.push(`${d} ${d === 1 ? "día" : "días"}`);
+      if (h) partes.push(`${h} ${h === 1 ? "hora" : "horas"}`);
+      if (!d) partes.push(`${m} ${m === 1 ? "minuto" : "minutos"}`);
+      el.textContent = `⏳ Faltan ${partes.join(", ")} para el despegue`;
+    };
+    pintar();
+    reloj = setInterval(pintar, 30000);
+  }
+
+  // Calendario: Google Calendar y archivo .ics (iPhone y otros)
+  const formatoUTC = f => f.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  let icsTexto = "";
+  function prepararCalendario(plan, fecha) {
+    const fin = new Date(fecha.getTime() + 3 * 36e5);
+    const titulo = `🧳 Cita con el turista: ${plan.resumen}`;
+    const detalle = "Guía oficial: Valeria ⭐ Yo paso a buscarte 😌";
+    document.getElementById("btnGoogleCal").href =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(titulo)}&dates=${formatoUTC(fecha)}/${formatoUTC(fin)}&details=${encodeURIComponent(detalle)}`;
+    icsTexto = [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Tours Valeria//ES", "BEGIN:VEVENT",
+      `UID:${fecha.getTime()}@tours-valeria`, `DTSTAMP:${formatoUTC(new Date())}`,
+      `DTSTART:${formatoUTC(fecha)}`, `DTEND:${formatoUTC(fin)}`,
+      `SUMMARY:${titulo}`, `DESCRIPTION:${detalle}`,
+      "BEGIN:VALARM", "TRIGGER:-PT2H", "ACTION:DISPLAY", "DESCRIPTION:¡En 2 horas sale el tour! 🧳", "END:VALARM",
+      "END:VEVENT", "END:VCALENDAR",
+    ].join("\r\n");
+  }
+  document.getElementById("btnIcs").addEventListener("click", () => {
+    if (!icsTexto) return;
+    const esIOS = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    if (esIOS) { // Safari abre el .ics directo y ofrece "Añadir al calendario"
+      location.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(icsTexto);
+      return;
+    }
+    const url = URL.createObjectURL(new Blob([icsTexto], { type: "text/calendar;charset=utf-8" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "cita-con-el-turista.ics";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  });
+
+  // Guardar el itinerario en su celular para que no se pierda si cierra la página
+  const CLAVE = "tours-valeria-itinerario";
+  const guardar = datos => { try { localStorage.setItem(CLAVE, JSON.stringify(datos)); } catch (e) {} };
+  function leerGuardado() {
+    try {
+      const d = JSON.parse(localStorage.getItem(CLAVE) || "null");
+      if (!d) return null;
+      const plan = TODOS.find(p => p.id === d.planId);
+      const fecha = new Date(d.fecha);
+      // Si ya pasó el día de la cita (con margen de 12 horas), empieza de cero
+      if (!plan || isNaN(fecha) || new Date() - fecha > 12 * 36e5) return null;
+      return { plan, dia: d.dia, franja: d.franja, horaExacta: d.horaExacta, fecha };
+    } catch (e) { return null; }
+  }
+
+  function pintarItinerario({ plan, dia, franja, horaExacta, fecha }) {
     const iconos = { "mañana": "☀️", tarde: "🌅", noche: "🌙" };
-    const cuando = `el ${dia} en la ${franja} ${aLas(horaExacta)}`;
+    const cuando = `el ${fechaBonita(fecha)} en la ${franja} ${aLas(horaExacta)}`;
     document.getElementById("paseDestino").textContent = `${plan.emoji} ${plan.resumen}`;
-    document.getElementById("paseDia").textContent = mayuscula(dia);
+    document.getElementById("paseDia").textContent = mayuscula(fecha.toLocaleDateString("es-PR", { timeZone: "America/Puerto_Rico", weekday: "short", day: "numeric", month: "short" }));
     document.getElementById("paseHora").textContent = `${horaExacta} ${iconos[franja]}`;
     document.getElementById("resumen").textContent = `${plan.resumen} ${cuando} ${plan.emoji}`;
+    document.getElementById("selloEmoji").textContent = plan.emoji;
+    document.getElementById("selloNombre").textContent = plan.titulo;
 
     const mensaje = `Guía confirmada para el turista: ${plan.resumen} ${cuando} 🧳`;
     document.getElementById("btnWhatsapp").href = `https://wa.me/${TELEFONO}?text=${encodeURIComponent(mensaje)}`;
+    prepararCalendario(plan, fecha);
+    cuentaRegresiva(fecha);
+  }
 
+  btnConfirmar.addEventListener("click", () => {
+    const { plan, dia, franja, horaExacta } = estado;
+    if (!plan || !dia || !horaExacta) return;
+    const fecha = fechaDeCita(dia, horaExacta);
+    pintarItinerario({ plan, dia, franja, horaExacta, fecha });
+    guardar({ planId: plan.id, dia, franja, horaExacta, fecha: fecha.toISOString() });
+    document.getElementById("regreso").hidden = true;
     mostrar("p5");
+    vibrar([60, 40, 60, 40, 120]);
     lluvia(["✈️", "💛", "🎃", "🧳", "📸", "🧡", "✨"], 50);
   });
 
   document.getElementById("btnCambiar").addEventListener("click", () => mostrar("p3"));
+
+  // Si ya había confirmado antes, la llevamos directo a su itinerario
+  const previo = leerGuardado();
+  if (previo) {
+    Object.assign(estado, { plan: previo.plan, dia: previo.dia, franja: previo.franja, horaExacta: previo.horaExacta });
+    btnNo.remove();
+    chipsDia.forEach(c => c.setAttribute("aria-pressed", String(c.dataset.valor === previo.dia)));
+    marcarFranja(previo.franja);
+    if (previo.franja !== "mañana") mostrarHoras(previo.franja);
+    pintarItinerario(previo);
+    document.getElementById("regreso").hidden = false;
+    mostrar("p5");
+  }
 </script>
 </body>
 </html>
