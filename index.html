@@ -111,6 +111,32 @@
   }
   @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
+  /* Turista que se puede tocar */
+  .turista { cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  .turista:focus-visible { outline: 3px solid var(--calabaza); outline-offset: 4px; border-radius: 20px; }
+  .turista-wrap.salto { animation: saltito .55s cubic-bezier(.3,1.5,.5,1); }
+  @keyframes saltito {
+    0% { transform: translateY(0); } 30% { transform: translateY(-22px) rotate(-4deg); }
+    60% { transform: translateY(0) scaleY(.94); } 80% { transform: translateY(-5px); } 100% { transform: none; }
+  }
+  .turista-wrap.hablando .globo { visibility: hidden; }
+  .dicho {
+    position: absolute; bottom: calc(100% - 6px); left: 50%; z-index: 5;
+    width: max-content; max-width: min(230px, 80vw); white-space: normal; text-align: center;
+    background: #fff; border: 3px solid var(--morado); border-radius: 18px;
+    padding: 8px 12px; font-weight: 800; font-size: 15px; line-height: 1.3; color: var(--morado);
+    box-shadow: var(--sombra); transform: translateX(-50%); pointer-events: none;
+    animation: decir .35s cubic-bezier(.3,1.5,.5,1);
+  }
+  .dicho::after {
+    content: ""; position: absolute; left: 50%; top: 100%; transform: translateX(-50%);
+    border: 8px solid transparent; border-top-color: var(--morado);
+  }
+  @keyframes decir {
+    from { transform: translateX(-50%) translateY(8px) scale(.6); opacity: 0; }
+    to   { transform: translateX(-50%) scale(1); opacity: 1; }
+  }
+
   /* Botones */
   .btn {
     font-family: "Nunito", sans-serif; font-weight: 800; font-size: 19px;
@@ -269,6 +295,69 @@
   .estampa b { font-size: 11px; line-height: 1.1; text-transform: uppercase; letter-spacing: .04em; max-width: 74px; }
   .estampa small { font-size: 9px; font-weight: 800; text-transform: uppercase; }
   .estampa.proximo { opacity: .75; border-style: dashed; }
+  .estampa em { font-style: normal; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+  .estampa em:empty { display: none; }
+
+  /* Sello confirmado: tinta gastada + caída de aduana */
+  .estampa.confirmado { position: relative; opacity: 1; border-style: double; }
+  .estampa.confirmado span { font-size: 22px; }
+  .estampa.confirmado small, .estampa.confirmado em { font-size: 8px; letter-spacing: 0; }
+  .estampa.confirmado b {
+    font-size: 10px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .estampa.confirmado::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background-image:
+      radial-gradient(circle, #FFF8EC 0 1px, transparent 1.6px),
+      radial-gradient(circle, #FFF8EC 0 .8px, transparent 1.3px),
+      radial-gradient(circle at 70% 30%, rgba(255,248,236,.55) 0 9px, transparent 14px);
+    background-size: 9px 11px, 6px 7px, 100% 100%;
+    background-position: 0 0, 3px 4px, 0 0;
+    opacity: .7;
+  }
+  .estampa.por-estampar { opacity: 0; }
+  .estampa.estampando { animation: estampar .75s cubic-bezier(.25,.9,.35,1) both; }
+  @keyframes estampar {
+    0%   { opacity: 0; transform: translateY(-90px) scale(1.9) rotate(calc(var(--rot) - 14deg)); }
+    50%  { opacity: 1; transform: translateY(0) scale(.88) rotate(var(--rot)); }
+    68%  { transform: translateY(-6px) scale(1.07) rotate(var(--rot)); }
+    84%  { transform: translateY(0) scale(.97) rotate(var(--rot)); }
+    100% { opacity: 1; transform: rotate(var(--rot)); }
+  }
+  .sello-pas.golpe { animation: golpe .35s .38s ease-out; }
+  @keyframes golpe { 0%, 100% { transform: none; } 30% { transform: translateY(3px); } 60% { transform: translateY(-1px); } }
+
+  /* Polaroid de la primera foto */
+  .polaroid {
+    width: min(230px, 78%); margin: 22px auto 4px; background: #fff; color: var(--morado);
+    padding: 10px 10px 14px; border-radius: 4px; transform: rotate(2.5deg);
+    box-shadow: 0 10px 22px rgba(0,0,0,.35);
+  }
+  .foto {
+    position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 2px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, #2C2546, #4A3E6E 55%, #2C2546);
+  }
+  .foto::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
+    background-size: 250% 100%; animation: revelar 3.2s ease-in-out infinite;
+  }
+  @keyframes revelar { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+  .foto-icono { position: relative; font-size: 42px; animation: esperar 2.6s ease-in-out infinite; }
+  @keyframes esperar { 0%, 100% { opacity: .45; transform: scale(.95); } 50% { opacity: .9; transform: scale(1.05); } }
+  .foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: aparecer 1.2s ease-out; }
+  .foto.con-foto::before, .foto.con-foto .foto-icono { display: none; }
+  .foto-texto { font-family: "Chewy", cursive; font-size: 18px; line-height: 1.2; margin-top: 10px; text-align: center; }
+
+  /* Mensajito después de WhatsApp */
+  .enviado {
+    margin-top: 12px; padding: 10px 14px; border-radius: 14px; background: #DDF7E7; color: #0E5A2E;
+    font-weight: 800; font-size: 15px; animation: entrar .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .enviado[hidden] { display: none; }
+  .enviado .maleta { display: inline-block; animation: empacar .6s ease-in-out 3; }
+  @keyframes empacar { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-14deg); } 75% { transform: rotate(14deg); } }
 
   /* Idea propia */
   .idea {
@@ -479,6 +568,7 @@
     <p class="texto">Ya tengo unas ganas brutales de verte otra vez. Ve contando las horas, que yo ya empecé 😌</p>
 
     <a class="btn whatsapp" id="btnWhatsapp" href="#" target="_blank" rel="noopener noreferrer">💬 Confírmamelo por WhatsApp</a>
+    <p class="enviado" id="enviado" role="status" hidden>Mensaje enviado al turista. Ya está empacando la maleta <span class="maleta">🧳</span></p>
 
     <div class="calendario">
       <p class="grupo-titulo">📅 Guárdalo en tu calendario</p>
@@ -501,10 +591,16 @@
           <p>Récord histórico: la guía por fin le ganó al turista. 🏆<br><i>"Tú siempre me ganas, ya era hora que te ganara."</i><br>(Revancha pendiente 😤)</p>
         </div>
         <div class="sello-pas">
-          <div class="estampa proximo" style="--rot:-3deg; --color:#F2711C"><span id="selloEmoji">✈️</span><b>Próximo sello</b><small>Pendiente ⏳</small></div>
+          <div class="estampa proximo" id="selloProximo" style="--rot:-3deg; --color:#F2711C"><span id="selloEmoji">✈️</span><b id="selloCorto">Próximo sello</b><em id="selloDia"></em><small id="selloEstado">Pendiente ⏳</small></div>
           <p><b id="selloNombre">Próximo destino</b><br>Este sello lo ponemos este fin de semana 😌</p>
         </div>
       </div>
+
+      <!-- Para poner la foto: sube un archivo llamado foto.jpg a la misma carpeta que este index.html -->
+      <figure class="polaroid">
+        <div class="foto" id="fotoMarco"><span class="foto-icono" aria-hidden="true">📸</span></div>
+        <figcaption class="foto-texto" id="fotoTexto">Primera foto juntos — Pendiente... la tomamos en este tour 😌</figcaption>
+      </figure>
     </div>
 
     <button class="btn-texto" id="btnCambiar">← Cambiar algo</button>
@@ -873,8 +969,9 @@
     do { final = Math.floor(Math.random() * TODOS.length); } while (final === ultimo && TODOS.length > 1);
     ultimo = final;
     const inicio = Math.floor(Math.random() * TODOS.length);
-    const pasos = TODOS.length * 2 + ((final - inicio + TODOS.length) % TODOS.length);
-    let paso = 0, espera = 55;
+    // Una vuelta completa y cae en el ganador; se va frenando y siempre termina en ~3 segundos
+    const pasos = TODOS.length + ((final - inicio + TODOS.length) % TODOS.length);
+    let paso = 0;
     function siguiente() {
       pintarSlot(TODOS[(inicio + paso) % TODOS.length]);
       if (paso === pasos) {
@@ -891,8 +988,7 @@
         return;
       }
       paso++;
-      espera *= 1.1;
-      setTimeout(siguiente, espera);
+      setTimeout(siguiente, 45 + 330 * Math.pow(paso / pasos, 2.2));
     }
     siguiente();
   }
@@ -953,9 +1049,15 @@
     grupoExacta.hidden = false;
   }
 
+  // Hora por defecto de cada franja (ella la puede cambiar)
+  const HORA_DEFECTO = { tarde: "3:00 PM", noche: "7:00 PM" };
+
   chipsFranja.forEach(c => c.addEventListener("click", () => {
     if (c.disabled) return;
-    if (estado.franja !== c.dataset.valor) estado.horaExacta = null;
+    if (estado.franja !== c.dataset.valor) {
+      estado.horaExacta = HORA_DEFECTO[c.dataset.valor];
+      horaLibre.value = "";
+    }
     marcarFranja(c.dataset.valor);
     mostrarHoras(c.dataset.valor);
     revisar();
@@ -982,7 +1084,8 @@
     chipTarde.disabled = !!plan.noche;
     notaNoche.hidden = !plan.noche;
     if (plan.noche && estado.franja !== "noche") {
-      estado.horaExacta = null;
+      estado.horaExacta = HORA_DEFECTO.noche;
+      horaLibre.value = "";
       marcarFranja("noche");
       mostrarHoras("noche");
     }
@@ -1021,16 +1124,13 @@
     clearInterval(reloj);
     const pintar = () => {
       const ms = fecha - new Date();
-      if (ms <= 0) { el.textContent = "✈️ ¡Hoy es el despegue! El turista ya va de camino 🚗"; clearInterval(reloj); return; }
+      if (ms <= 0) { el.textContent = "¡Llegó el día del tour! 🎉"; clearInterval(reloj); return; }
       const d = Math.floor(ms / 864e5), h = Math.floor(ms / 36e5) % 24, m = Math.floor(ms / 6e4) % 60;
-      const partes = [];
-      if (d) partes.push(`${d} ${d === 1 ? "día" : "días"}`);
-      if (h) partes.push(`${h} ${h === 1 ? "hora" : "horas"}`);
-      if (!d) partes.push(`${m} ${m === 1 ? "minuto" : "minutos"}`);
-      el.textContent = `⏳ Faltan ${partes.join(", ")} para el despegue`;
+      const n = (x, uno, varios) => `${x} ${x === 1 ? uno : varios}`;
+      el.textContent = `Faltan ${n(d, "día", "días")}, ${n(h, "hora", "horas")}, ${n(m, "minuto", "minutos")} para el tour 🧳`;
     };
     pintar();
-    reloj = setInterval(pintar, 30000);
+    reloj = setInterval(pintar, 15000);
   }
 
   // Calendario: Google Calendar y archivo .ics (iPhone y otros)
@@ -1084,6 +1184,36 @@
     } catch (e) { return null; }
   }
 
+  // Nombre corto para que quepa dentro del sello redondo
+  const CORTOS = {
+    soul: "Soul Cream", trampolin: "Trampoline Park", halloween: "Halloween Guaynabo", comer: "A comer",
+    bahia: "Bahía bio", placita: "La Placita", billar: "Billar", pingpong: "Ping pong",
+    palmas: "Palmas del Mar", playa: "Isla Verde", cine: "Cine",
+  };
+  const nombreCorto = plan => CORTOS[plan.id] || (plan.titulo.length > 22 ? plan.titulo.slice(0, 21).trim() + "…" : plan.titulo);
+
+  // El sello cae como sello de aduana cuando ella llega a verlo en pantalla
+  let vigilaSello = null;
+  function estamparSello() {
+    const sello = document.getElementById("selloProximo");
+    const tarjeta = sello.closest(".sello-pas");
+    sello.classList.remove("estampando");
+    tarjeta.classList.remove("golpe");
+    if (reducido || !("IntersectionObserver" in window)) return;
+    sello.classList.add("por-estampar");
+    if (vigilaSello) vigilaSello.disconnect();
+    vigilaSello = new IntersectionObserver(entradas => {
+      if (!entradas[0].isIntersecting) return;
+      vigilaSello.disconnect();
+      sello.classList.remove("por-estampar");
+      void sello.offsetWidth;
+      sello.classList.add("estampando");
+      tarjeta.classList.add("golpe");
+      setTimeout(() => vibrar(40), 380);
+    }, { threshold: 0.8 });
+    vigilaSello.observe(tarjeta);
+  }
+
   function pintarItinerario({ plan, dia, franja, horaExacta, fecha }) {
     const iconos = { "mañana": "☀️", tarde: "🌅", noche: "🌙" };
     const cuando = `el ${fechaBonita(fecha)} en la ${franja} ${aLas(horaExacta)}`;
@@ -1093,6 +1223,13 @@
     document.getElementById("resumen").textContent = `${plan.resumen} ${cuando} ${plan.emoji}`;
     document.getElementById("selloEmoji").textContent = plan.emoji;
     document.getElementById("selloNombre").textContent = plan.titulo;
+    document.getElementById("selloCorto").textContent = nombreCorto(plan);
+    document.getElementById("selloDia").textContent =
+      fecha.toLocaleDateString("es-PR", { timeZone: "America/Puerto_Rico", weekday: "short", day: "numeric", month: "short" }).replace(/[.,]/g, "");
+    document.getElementById("selloEstado").textContent = "Confirmado ✓";
+    const sello = document.getElementById("selloProximo");
+    sello.classList.remove("proximo");
+    sello.classList.add("confirmado");
 
     const mensaje = `Guía confirmada para el turista: ${plan.resumen} ${cuando} 🧳`;
     document.getElementById("btnWhatsapp").href = `https://wa.me/${TELEFONO}?text=${encodeURIComponent(mensaje)}`;
@@ -1107,12 +1244,76 @@
     pintarItinerario({ plan, dia, franja, horaExacta, fecha });
     guardar({ planId: plan.id, planTexto: plan.id === "propia" ? plan.titulo : undefined, dia, franja, horaExacta, fecha: fecha.toISOString() });
     document.getElementById("regreso").hidden = true;
+    document.getElementById("enviado").hidden = true;
     mostrar("p5");
+    estamparSello();
     vibrar([60, 40, 60, 40, 120]);
     lluvia(["✈️", "💛", "🎃", "🧳", "📸", "🧡", "✨"], 50);
   });
 
   document.getElementById("btnCambiar").addEventListener("click", () => mostrar("p3"));
+
+  // ====== TURISTA INTERACTIVO ======
+  const FRASES = [
+    "¿Ya llegamos?",
+    "Guía, me perdí 🥺",
+    "¿Aquí se puede tirar foto? 📸",
+    "Yo soy turista, yo te sigo a ti",
+    "¿Hay mantecado en este tour? 🍦",
+    "Todavía estoy pensando en la revancha de la bolera 😤",
+    "Guía, ¿esto está incluido en el paquete?",
+  ];
+  let ultimaFrase = -1;
+  document.querySelectorAll(".turista").forEach(t => {
+    const wrap = t.closest(".turista-wrap");
+    let tiempo = null;
+    t.setAttribute("role", "button");
+    t.setAttribute("tabindex", "0");
+    t.setAttribute("aria-label", "Toca al turista");
+    const hablar = () => {
+      let i;
+      do { i = Math.floor(Math.random() * FRASES.length); } while (i === ultimaFrase);
+      ultimaFrase = i;
+      let dicho = wrap.querySelector(".dicho");
+      if (!dicho) {
+        dicho = document.createElement("div");
+        dicho.className = "dicho";
+        dicho.setAttribute("role", "status");
+        wrap.appendChild(dicho);
+      }
+      dicho.textContent = FRASES[i];
+      dicho.style.animation = "none"; void dicho.offsetWidth; dicho.style.animation = "";
+      wrap.classList.add("hablando");
+      wrap.classList.remove("salto"); void wrap.offsetWidth; wrap.classList.add("salto");
+      vibrar(25);
+      clearTimeout(tiempo);
+      tiempo = setTimeout(() => { dicho.remove(); wrap.classList.remove("hablando"); }, 3200);
+    };
+    t.addEventListener("click", hablar);
+    t.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hablar(); } });
+    wrap.addEventListener("animationend", e => { if (e.animationName === "saltito") wrap.classList.remove("salto"); });
+  });
+
+  // ====== DESPUÉS DE WHATSAPP ======
+  document.getElementById("btnWhatsapp").addEventListener("click", () => {
+    const aviso = document.getElementById("enviado");
+    aviso.hidden = true; void aviso.offsetWidth; aviso.hidden = false;
+    lluvia(["🧳", "💛", "✈️"], 14);
+  });
+
+  // ====== PRIMERA FOTO JUNTOS ======
+  // Si existe foto.jpg en la misma carpeta, aparece dentro del marco; si no, se queda el marco vacío.
+  (function cargarFoto() {
+    const img = new Image();
+    img.alt = "Nuestra primera foto juntos";
+    img.onload = () => {
+      document.getElementById("fotoMarco").classList.add("con-foto");
+      document.getElementById("fotoMarco").appendChild(img);
+      document.getElementById("fotoTexto").textContent = "Primera foto juntos 💛";
+    };
+    img.onerror = () => {}; // sin foto todavía: el marco sigue esperando
+    img.src = "foto.jpg";
+  })();
 
   // Para probar: abrir el link con ?reiniciar borra el itinerario guardado en ese celular
   if (new URLSearchParams(location.search).has("reiniciar")) {
