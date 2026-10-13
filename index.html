@@ -207,7 +207,7 @@
   /* Ruleta */
   .ruleta-overlay {
     position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center;
-    padding: 18px; background: rgba(59, 31, 74, .55); backdrop-filter: blur(4px);
+    padding: 18px; background: rgba(59, 31, 74, .55); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
     animation: aparecer .25s ease-out;
   }
   .ruleta-overlay[hidden] { display: none; }
