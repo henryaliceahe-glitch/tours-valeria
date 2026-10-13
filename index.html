@@ -270,6 +270,25 @@
   .estampa small { font-size: 9px; font-weight: 800; text-transform: uppercase; }
   .estampa.proximo { opacity: .75; border-style: dashed; }
 
+  /* Idea propia */
+  .idea {
+    margin-top: 14px; text-align: left; background: #fff; border: 3px dashed var(--morado-medio);
+    border-radius: 20px; padding: 16px 14px;
+  }
+  .idea-cabeza { display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: start; margin-bottom: 12px; }
+  .idea .emoji { width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; font-size: 32px; background: #EBDDF3; }
+  .idea h3 { font-family: "Chewy", cursive; font-weight: 400; font-size: 23px; line-height: 1.1; margin-bottom: 4px; }
+  .idea p { font-size: 15px; line-height: 1.4; }
+  .idea input {
+    width: 100%; font: inherit; font-size: 17px; font-weight: 700; color: var(--morado);
+    border: 3px solid var(--morado); border-radius: 14px; padding: 12px 14px; min-height: 52px; background: var(--crema);
+  }
+  .idea input:focus { outline: 3px solid var(--calabaza); outline-offset: 2px; }
+  .idea .btn { width: 100%; margin-top: 12px; }
+  .idea-error { color: var(--calabaza-osc); font-weight: 800; margin-top: 8px; }
+  .idea-error[hidden] { display: none; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
   .nota {
     background: var(--rosado-suave); border-radius: 16px; padding: 12px 14px; margin: 18px 0;
     font-weight: 700; font-size: 16px;
@@ -376,6 +395,20 @@
     </div>
     <h2>Tú eres la guía, yo soy turista 🧳📸 <span class="naranja">¿A dónde me llevas?</span></h2>
     <div class="tarjetas" id="tarjetas"></div>
+
+    <form class="idea" id="ideaForm" autocomplete="off">
+      <div class="idea-cabeza">
+        <div class="emoji">💡</div>
+        <div>
+          <h3>¿Tienes otra idea?</h3>
+          <p>La guía manda. Escribe tu plan y el turista te sigue a donde sea.</p>
+        </div>
+      </div>
+      <label class="sr-only" for="ideaTexto">Tu idea de plan</label>
+      <input id="ideaTexto" maxlength="80" placeholder="Ej: ver el atardecer en..." enterkeyhint="done">
+      <p class="idea-error" id="ideaError" hidden>Escríbeme la idea primero, guía 😅</p>
+      <button class="btn morado" type="submit">¡Ese es el plan! 💡</button>
+    </form>
   </section>
 
   <!-- 4. Día y hora -->
@@ -786,6 +819,23 @@
     setTimeout(() => { eligiendo = false; irAlDia(); }, 1100);
   }
 
+  // ====== IDEA PROPIA DE LA GUÍA ======
+  const planPropio = texto => ({ id: "propia", emoji: "💡", titulo: texto, resumen: texto, desc: "" });
+  const ideaTexto = document.getElementById("ideaTexto");
+  const ideaError = document.getElementById("ideaError");
+  ideaTexto.addEventListener("input", () => { ideaError.hidden = true; });
+  document.getElementById("ideaForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const texto = ideaTexto.value.trim().replace(/\s+/g, " ");
+    if (!texto) { ideaError.hidden = false; ideaTexto.focus(); return; }
+    ideaTexto.blur();
+    estado.plan = planPropio(texto);
+    contenedor.querySelectorAll(".tarjeta").forEach(t => { t.classList.remove("elegida"); t.querySelector(".aprobado")?.remove(); });
+    lluvia(["💡", "✨", "💛"], 20);
+    try { navigator.vibrate && navigator.vibrate(120); } catch (err) {}
+    setTimeout(irAlDia, 600);
+  });
+
   // ====== RULETA ======
   const overlay = document.getElementById("ruletaOverlay");
   const slot = document.getElementById("slot");
@@ -1026,7 +1076,7 @@
     try {
       const d = JSON.parse(localStorage.getItem(CLAVE) || "null");
       if (!d) return null;
-      const plan = TODOS.find(p => p.id === d.planId);
+      const plan = d.planId === "propia" && d.planTexto ? planPropio(d.planTexto) : TODOS.find(p => p.id === d.planId);
       const fecha = new Date(d.fecha);
       // Si ya pasó el día de la cita (con margen de 12 horas), empieza de cero
       if (!plan || isNaN(fecha) || new Date() - fecha > 12 * 36e5) return null;
@@ -1055,7 +1105,7 @@
     if (!plan || !dia || !horaExacta) return;
     const fecha = fechaDeCita(dia, horaExacta);
     pintarItinerario({ plan, dia, franja, horaExacta, fecha });
-    guardar({ planId: plan.id, dia, franja, horaExacta, fecha: fecha.toISOString() });
+    guardar({ planId: plan.id, planTexto: plan.id === "propia" ? plan.titulo : undefined, dia, franja, horaExacta, fecha: fecha.toISOString() });
     document.getElementById("regreso").hidden = true;
     mostrar("p5");
     vibrar([60, 40, 60, 40, 120]);
