@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tours Valeria 🧳 Pregunta seria</title>
+<meta name="description" content="Tu turista favorito tiene una pregunta muy seria para ti 👀">
+<meta property="og:title" content="Tengo una pregunta muy seria para ti 👀">
+<meta property="og:description" content="De parte de tu turista favorito 🧳📸">
+<meta name="theme-color" content="#F2711C">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧳</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --calabaza: #F2711C;
+    --calabaza-osc: #D35400;
+    --crema: #FFF4E4;
+    --rosado: #F7B6C2;
+    --rosado-suave: #FDE2E7;
+    --morado: #3B1F4A;
+    --morado-medio: #6B3A7D;
+    --dorado: #F6B93B;
+    --verde: #25D366;
+    --sombra: 0 10px 30px rgba(59, 31, 74, .18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Nunito", system-ui, sans-serif;
+    color: var(--morado);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(247,182,194,.55), transparent 45%),
+      radial-gradient(circle at 90% 85%, rgba(242,113,28,.25), transparent 50%),
+      linear-gradient(180deg, var(--crema) 0%, #FFE9D6 100%);
+    background-attachment: fixed;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* Hojitas, calabacitas y fantasmitas flotando de fondo */
+  .fondo { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .fondo span {
+    position: absolute; top: -10vh; font-size: 22px; opacity: .35;
+    animation: flotar linear infinite;
+  }
+  @keyframes flotar {
+    0%   { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(115vh) rotate(360deg); }
+  }
+
+  main {
+    position: relative; z-index: 1;
+    min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: max(20px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+  }
+
+  .pantalla { display: none; width: 100%; max-width: 440px; text-align: center; }
+  .pantalla.activa { display: block; animation: entrar .6s cubic-bezier(.2,.8,.2,1); }
+  @keyframes entrar {
+    from { opacity: 0; transform: translateY(24px) scale(.97); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  /* Cintillo tipo folleto */
+  .cintillo {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--morado); color: var(--crema);
+    font-weight: 800; font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  .parada { font-size: 13px; font-weight: 700; color: var(--morado-medio); margin-bottom: 8px; }
+
+  h1, h2 {
+    font-family: "Chewy", "Nunito", cursive; font-weight: 400;
+    line-height: 1.1; color: var(--morado);
+  }
+  h1 { font-size: clamp(34px, 10vw, 46px); margin: 6px 0 12px; }
+  h2 { font-size: clamp(28px, 8.4vw, 38px); margin: 6px 0 10px; }
+  h1 .naranja, h2 .naranja { color: var(--calabaza); }
+  p.texto { font-size: 18px; line-height: 1.5; margin: 0 auto 18px; max-width: 360px; }
+  p.chiquito { font-size: 15px; color: var(--morado-medio); }
+
+  /* Personaje turista */
+  .turista-wrap { position: relative; width: 150px; margin: 0 auto 6px; }
+  .turista-wrap.peq { width: 110px; }
+  .turista { animation: brincar 2.2s ease-in-out infinite; transform-origin: bottom center; }
+  .turista svg { width: 100%; height: auto; display: block; filter: drop-shadow(0 8px 10px rgba(59,31,74,.18)); }
+  @keyframes brincar {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-8px) rotate(2deg); }
+  }
+  .globo {
+    position: absolute; top: 4px; right: -78px;
+    background: #fff; border: 3px solid var(--morado); border-radius: 18px;
+    padding: 6px 10px; font-weight: 800; font-size: 14px; white-space: nowrap;
+    box-shadow: var(--sombra); animation: pop .5s .3s both;
+  }
+  .peq .globo { right: -86px; }
+  .globo::after {
+    content: ""; position: absolute; left: -10px; bottom: 8px;
+    border: 7px solid transparent; border-right-color: var(--morado);
+  }
+  @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+  /* Botones */
+  .btn {
+    font-family: "Nunito", sans-serif; font-weight: 800; font-size: 19px;
+    border: 0; border-radius: 999px; cursor: pointer;
+    padding: 16px 28px; min-height: 56px;
+    color: #fff; background: var(--calabaza);
+    box-shadow: 0 6px 0 var(--calabaza-osc), var(--sombra);
+    transition: transform .15s, box-shadow .15s, font-size .35s, padding .35s;
+    touch-action: manipulation;
+  }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--calabaza-osc), var(--sombra); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  .btn.morado { background: var(--morado-medio); box-shadow: 0 6px 0 var(--morado), var(--sombra); }
+  .btn.blanco { background: #fff; color: var(--morado); box-shadow: 0 6px 0 #E8D5C4, var(--sombra); }
+  .btn.whatsapp { background: var(--verde); box-shadow: 0 6px 0 #128C4B, var(--sombra); width: 100%; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-texto {
+    background: none; border: 0; font: inherit; font-weight: 700; font-size: 15px;
+    color: var(--morado-medio); text-decoration: underline; cursor: pointer; padding: 12px; margin-top: 6px;
+  }
+
+  /* Pregunta */
+  .opciones { display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap; min-height: 120px; margin-top: 10px; }
+  #btnSi { font-size: 22px; }
+  #btnNo {
+    background: #fff; color: var(--morado); box-shadow: 0 6px 0 #E8D5C4, var(--sombra);
+    transition: left .35s cubic-bezier(.3,1.4,.5,1), top .35s cubic-bezier(.3,1.4,.5,1), transform .15s;
+    max-width: 78vw; font-size: 17px; z-index: 50;
+  }
+  #btnNo.huyendo { position: fixed; }
+  #pista { min-height: 24px; margin-top: 14px; font-weight: 700; color: var(--calabaza-osc); }
+
+  /* Tarjetas del folleto */
+  .tarjetas { display: grid; gap: 14px; margin-top: 16px; text-align: left; }
+  .tarjeta {
+    position: relative; display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: start;
+    background: #fff; border: 3px solid var(--morado); border-radius: 20px;
+    padding: 16px 16px 16px 14px; cursor: pointer; font: inherit; color: inherit; text-align: left; width: 100%;
+    box-shadow: 5px 5px 0 var(--morado);
+    transition: transform .15s, box-shadow .15s, background .2s;
+  }
+  .tarjeta:active { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--morado); }
+  .tarjeta .emoji {
+    width: 58px; height: 58px; border-radius: 16px; display: grid; place-items: center; font-size: 32px;
+    background: var(--rosado-suave);
+  }
+  .tarjeta:nth-child(2) .emoji { background: #E4F3FF; }
+  .tarjeta:nth-child(3) .emoji { background: #FFE6CF; }
+  .tarjeta:nth-child(4) .emoji { background: #FFF1C2; }
+  .tarjeta.sorpresa .emoji { background: #EBDDF3; }
+  .tarjeta h3 { font-family: "Chewy", cursive; font-weight: 400; font-size: 23px; line-height: 1.1; margin-bottom: 4px; }
+  .tarjeta p { font-size: 15px; line-height: 1.4; }
+  .sello {
+    display: inline-block; margin-top: 8px; padding: 3px 9px;
+    border: 2px dashed var(--calabaza); border-radius: 8px; color: var(--calabaza-osc);
+    font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em;
+    transform: rotate(-2deg);
+  }
+  .tarjeta.ruleta { background: #FFF1C2; transform: scale(1.03); }
+  .tarjeta.elegida { background: #FFE6CF; border-color: var(--calabaza); box-shadow: 5px 5px 0 var(--calabaza); }
+  .aprobado {
+    position: absolute; top: 10px; right: 10px;
+    border: 3px solid #1E9E50; color: #1E9E50; border-radius: 10px;
+    font-family: "Chewy", cursive; font-size: 20px; padding: 2px 10px; background: rgba(255,255,255,.9);
+    transform: rotate(12deg); animation: sellar .4s cubic-bezier(.3,1.6,.5,1);
+  }
+  @keyframes sellar { from { transform: rotate(12deg) scale(2.5); opacity: 0; } to { transform: rotate(12deg) scale(1); opacity: 1; } }
+
+  /* Día y hora */
+  .grupo { margin: 18px 0 6px; }
+  .grupo-titulo { font-weight: 800; font-size: 14px; letter-spacing: .1em; text-transform: uppercase; color: var(--morado-medio); margin-bottom: 10px; }
+  .chips { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .chips.dos { grid-template-columns: repeat(2, 1fr); }
+  .chip {
+    font: inherit; font-weight: 800; font-size: 17px; color: var(--morado);
+    background: #fff; border: 3px solid var(--morado); border-radius: 16px;
+    padding: 14px 6px; min-height: 64px; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--morado); transition: all .15s;
+  }
+  .chip small { display: block; font-size: 22px; line-height: 1.2; }
+  .chip[aria-pressed="true"] { background: var(--calabaza); color: #fff; border-color: var(--calabaza-osc); box-shadow: 3px 3px 0 var(--calabaza-osc); transform: translateY(-2px); }
+  .chip.hora { font-size: 16px; min-height: 52px; padding: 10px 4px; }
+  .chip:disabled { opacity: .35; cursor: not-allowed; box-shadow: none; }
+  .nota-noche { margin-top: 10px; font-weight: 700; font-size: 14px; color: var(--morado-medio); }
+  .nota-noche[hidden], .slot-noche[hidden] { display: none; }
+  .hora-libre {
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px;
+    margin-top: 12px; font-weight: 700; font-size: 15px; color: var(--morado-medio);
+  }
+  .hora-libre input {
+    font: inherit; font-weight: 800; color: var(--morado); background: #fff;
+    border: 3px solid var(--morado); border-radius: 12px; padding: 8px 10px; min-height: 48px;
+  }
+
+  /* Ruleta */
+  .ruleta-overlay {
+    position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center;
+    padding: 18px; background: rgba(59, 31, 74, .55); backdrop-filter: blur(4px);
+    animation: aparecer .25s ease-out;
+  }
+  .ruleta-overlay[hidden] { display: none; }
+  @keyframes aparecer { from { opacity: 0; } to { opacity: 1; } }
+  .ruleta-caja {
+    position: relative; width: 100%; max-width: 400px; text-align: center;
+    background: var(--crema); border: 3px solid var(--morado); border-radius: 26px;
+    box-shadow: 6px 6px 0 var(--morado); padding: 22px 18px 20px;
+    animation: entrar .4s cubic-bezier(.2,.8,.2,1);
+  }
+  .cerrar {
+    position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 0; border-radius: 50%;
+    background: transparent; font-size: 20px; font-weight: 800; color: var(--morado); cursor: pointer;
+  }
+  .slot {
+    background: #fff; border: 3px dashed var(--calabaza); border-radius: 20px;
+    padding: 18px 12px; min-height: 150px; display: grid; place-items: center; align-content: center; gap: 6px;
+  }
+  .slot.tic { animation: tic .12s ease-out; }
+  @keyframes tic { from { transform: translateY(-6px); opacity: .5; } to { transform: none; opacity: 1; } }
+  .slot.ganador { border-style: solid; background: #FFE6CF; animation: ganar .45s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes ganar { from { transform: scale(.85); } to { transform: scale(1); } }
+  .slot-emoji { font-size: 56px; line-height: 1; }
+  .slot-titulo { font-family: "Chewy", cursive; font-size: 26px; line-height: 1.1; color: var(--morado); }
+  .slot-noche { margin-top: 12px; font-weight: 800; color: var(--morado-medio); }
+  .slot-desc { font-size: 16px; line-height: 1.45; margin: 12px 4px 16px; min-height: 46px; }
+  .slot-botones { display: grid; gap: 12px; }
+  .slot-botones[hidden] { display: none; }
+
+  .nota {
+    background: var(--rosado-suave); border-radius: 16px; padding: 12px 14px; margin: 18px 0;
+    font-weight: 700; font-size: 16px;
+  }
+
+  /* Pase de abordar */
+  .pase {
+    background: #fff; border: 3px solid var(--morado); border-radius: 22px; overflow: hidden;
+    box-shadow: 6px 6px 0 var(--morado); text-align: left; margin: 16px 0 18px;
+  }
+  .pase-top {
+    background: var(--morado); color: var(--crema); padding: 12px 16px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 800; font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  }
+  .pase-cuerpo { padding: 14px 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
+  .campo span { display: block; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--morado-medio); }
+  .campo b { font-size: 17px; }
+  .campo.ancho { grid-column: 1 / -1; }
+  .campo.ancho b { font-family: "Chewy", cursive; font-weight: 400; font-size: 25px; color: var(--calabaza-osc); }
+  .corte { position: relative; border-top: 3px dashed var(--rosado); margin: 0 14px; }
+  .corte::before, .corte::after {
+    content: ""; position: absolute; top: -14px; width: 24px; height: 24px; border-radius: 50%;
+    background: var(--crema); border: 3px solid var(--morado);
+  }
+  .corte::before { left: -30px; } .corte::after { right: -30px; }
+  .barras {
+    height: 46px; margin: 14px 16px 16px;
+    background: repeating-linear-gradient(90deg, var(--morado) 0 2px, transparent 2px 5px, var(--morado) 5px 9px, transparent 9px 11px, var(--morado) 11px 12px, transparent 12px 16px);
+    border-radius: 4px; opacity: .85;
+  }
+  .resumen { font-size: 19px; font-weight: 800; margin-bottom: 10px; }
+  .cierre { font-family: "Chewy", cursive; font-size: 27px; line-height: 1.2; color: var(--morado); margin: 14px 0 8px; }
+
+  /* Lluvia de confeti */
+  .cae {
+    position: fixed; top: -50px; z-index: 100; pointer-events: none;
+    animation: caer linear forwards;
+  }
+  @keyframes caer {
+    to { transform: translateY(115vh) rotate(540deg); }
+  }
+
+  .celebra { animation: latido 1s ease-in-out infinite; display: inline-block; }
+  @keyframes latido { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .fondo { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fondo" id="fondo" aria-hidden="true"></div>
+
+<main>
+  <!-- 1. Bienvenida -->
+  <section class="pantalla activa" id="p1">
+    <div class="cintillo">🧳 Tours Valeria · Guía oficial</div>
+    <div class="turista-wrap">
+      <div class="turista"></div>
+      <div class="globo">¡Wepa! 👋</div>
+    </div>
+    <h1>Hola Valeria 👀</h1>
+    <p class="texto">Aquí tu <b>turista favorito</b> reportándose desde su base de operaciones (mi cama) 📸</p>
+    <p class="texto">Tengo una pregunta <b>muy seria</b> para ti... Bueno, seria-seria no, pero importante. Siéntate. O quédate de pie. Tú eres la guía, tú decides.</p>
+    <button class="btn" id="btnEmpezar">Dale, pregunta 👉</button>
+  </section>
+
+  <!-- 2. La pregunta -->
+  <section class="pantalla" id="p2">
+    <div class="parada">Parada 1 de 3 · La gran pregunta</div>
+    <div class="turista-wrap peq">
+      <div class="turista"></div>
+      <div class="globo">🥺👉👈</div>
+    </div>
+    <h1>¿Quieres salir conmigo <span class="naranja">este fin de semana?</span></h1>
+    <div class="opciones">
+      <button class="btn" id="btnSi">¡Sí! 💛</button>
+      <button class="btn" id="btnNo">No</button>
+    </div>
+    <p id="pista" aria-live="polite"></p>
+  </section>
+
+  <!-- 2b. Celebración -->
+  <section class="pantalla" id="p2b">
+    <div class="turista-wrap">
+      <div class="turista"></div>
+      <div class="globo">¡AAAAH! 🎉</div>
+    </div>
+    <h1><span class="celebra">🎉</span> ¡Dijo que sí! <span class="celebra">🎃</span></h1>
+    <p class="texto">Ya se lo dije a mi mamá, al perro y al fantasmita del vecino 👻. No hay vuelta atrás.</p>
+    <p class="texto">Ahora viene lo mejor: <b>tú eres la guía</b>, así que tú escoges el tour.</p>
+    <button class="btn" id="btnAlPlan">Ver el folleto 🗺️</button>
+  </section>
+
+  <!-- 3. Elegir plan -->
+  <section class="pantalla" id="p3">
+    <div class="parada">Parada 2 de 3 · El tour</div>
+    <div class="turista-wrap peq">
+      <div class="turista"></div>
+      <div class="globo">¿Pa' dónde? 📸</div>
+    </div>
+    <h2>Tú eres la guía, yo soy turista 🧳📸 <span class="naranja">¿A dónde me llevas?</span></h2>
+    <div class="tarjetas" id="tarjetas"></div>
+  </section>
+
+  <!-- 4. Día y hora -->
+  <section class="pantalla" id="p4">
+    <div class="parada">Parada 3 de 3 · Cuándo</div>
+    <div class="turista-wrap peq">
+      <div class="turista"></div>
+      <div class="globo">🗓️ ¿Cuándo?</div>
+    </div>
+    <h2>¿Qué día te <span class="naranja">secuestro</span>? 😌</h2>
+    <p class="chiquito" id="planElegidoTexto"></p>
+
+    <div class="grupo">
+      <div class="grupo-titulo">Día</div>
+      <div class="chips" id="dias">
+        <button class="chip" data-valor="viernes" aria-pressed="false"><small>🍂</small>Viernes</button>
+        <button class="chip" data-valor="sábado" aria-pressed="false"><small>🎃</small>Sábado</button>
+        <button class="chip" data-valor="domingo" aria-pressed="false"><small>☀️</small>Domingo</button>
+      </div>
+    </div>
+    <div class="grupo">
+      <div class="grupo-titulo">Hora</div>
+      <div class="chips dos" id="horas">
+        <button class="chip" data-valor="tarde" aria-pressed="false"><small>🌅</small>Tarde</button>
+        <button class="chip" data-valor="noche" aria-pressed="false"><small>🌙</small>Noche</button>
+      </div>
+      <p class="nota-noche" id="notaNoche" hidden>🌙 Este plan es de noche, así que la tarde queda libre pa' prepararte</p>
+    </div>
+    <div class="grupo" id="grupoHoraExacta" hidden>
+      <div class="grupo-titulo">¿A qué hora exacta, guía?</div>
+      <div class="chips" id="horasExactas"></div>
+      <label class="hora-libre">⏰ ¿Otra hora? Escógela aquí:
+        <input type="time" id="horaLibre">
+      </label>
+    </div>
+
+    <div class="nota">🚗 Yo paso a buscarte, no te preocupes por la distancia 😌<br>El turista tiene GPS y muchas ganas.</div>
+
+    <button class="btn" id="btnConfirmar" disabled>Confirmar itinerario ✈️</button><br>
+    <button class="btn-texto" id="btnVolverPlan">← Cambiar el plan</button>
+  </section>
+
+  <!-- 5. Confirmación -->
+  <section class="pantalla" id="p5">
+    <div class="turista-wrap peq">
+      <div class="turista"></div>
+      <div class="globo">💛 ¡Listo!</div>
+    </div>
+    <h1>Itinerario confirmado ✈️</h1>
+
+    <div class="pase">
+      <div class="pase-top"><span>🧳 Pase de abordar</span><span>Vuelo VAL-💛</span></div>
+      <div class="pase-cuerpo">
+        <div class="campo"><span>Guía oficial</span><b>Valeria ⭐</b></div>
+        <div class="campo"><span>Turista</span><b>Yo 📸</b></div>
+        <div class="campo ancho"><span>Destino</span><b id="paseDestino"></b></div>
+        <div class="campo"><span>Día</span><b id="paseDia"></b></div>
+        <div class="campo"><span>Hora</span><b id="paseHora"></b></div>
+      </div>
+      <div class="corte"></div>
+      <div class="barras" aria-hidden="true"></div>
+    </div>
+
+    <p class="resumen" id="resumen"></p>
+    <p class="cierre">Yo soy turista, yo te sigo a ti... a donde sea 💛</p>
+    <p class="texto">Ya tengo unas ganas brutales de verte otra vez. Ve contando las horas, que yo ya empecé 😌</p>
+
+    <a class="btn whatsapp" id="btnWhatsapp" href="#" target="_blank" rel="noopener noreferrer">💬 Confírmamelo por WhatsApp</a>
+    <button class="btn-texto" id="btnCambiar">← Cambiar algo</button>
+  </section>
+</main>
+
+<!-- Ventana de la ruleta -->
+<div class="ruleta-overlay" id="ruletaOverlay" role="dialog" aria-modal="true" aria-labelledby="ruletaTitulo" hidden>
+  <div class="ruleta-caja">
+    <button class="cerrar" id="btnCerrarRuleta" aria-label="Cerrar la ruleta">✕</button>
+    <div class="cintillo" id="ruletaTitulo">🎰 Ruleta del destino</div>
+    <div class="slot" id="slot" aria-live="polite">
+      <div class="slot-emoji" id="slotEmoji">🎲</div>
+      <div class="slot-titulo" id="slotTitulo">...</div>
+    </div>
+    <p class="slot-noche" id="slotNoche" hidden>🌙 Plan nocturno secreto desbloqueado</p>
+    <p class="slot-desc" id="slotDesc"></p>
+    <div class="slot-botones" id="slotBotones" hidden>
+      <button class="btn" id="btnAceptarRuleta">¡Ese mismo! ✅</button>
+      <button class="btn blanco" id="btnOtraVez">Girar otra vez 🎲</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ====== CONFIGURACIÓN ======
+  const TELEFONO = "17875590262"; // tu número con código de país, sin + ni guiones
+
+  // ====== PERSONAJE TURISTA (SVG) ======
+  const TURISTA_SVG = `
+  <svg viewBox="0 0 140 170" xmlns="http://www.w3.org/2000/svg" aria-label="Turista con gorra, gafas y cámara" role="img">
+    <!-- mapa en la mano -->
+    <g transform="translate(98 104) rotate(12)">
+      <rect x="0" y="0" width="34" height="28" rx="3" fill="#FFF4E4" stroke="#3B1F4A" stroke-width="3"/>
+      <path d="M11 0v28M23 0v28" stroke="#3B1F4A" stroke-width="2"/>
+      <path d="M4 18 q8 -10 14 -2 t12 -8" fill="none" stroke="#F2711C" stroke-width="2.5" stroke-dasharray="3 3"/>
+      <circle cx="28" cy="7" r="3" fill="#E74C3C"/>
+    </g>
+    <!-- cuerpo / camisa hawaiana -->
+    <path d="M30 168 v-36 q0 -26 40 -26 q40 0 40 26 v36z" fill="#F2711C" stroke="#3B1F4A" stroke-width="3.5"/>
+    <circle cx="48" cy="140" r="5" fill="#F7B6C2"/><circle cx="92" cy="150" r="5" fill="#F7B6C2"/>
+    <circle cx="60" cy="160" r="4" fill="#F6B93B"/><circle cx="86" cy="128" r="4" fill="#F6B93B"/>
+    <path d="M70 108 l-9 14 9 -3 9 3z" fill="#FFF4E4" stroke="#3B1F4A" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- brazo -->
+    <path d="M104 126 q8 4 2 14" fill="none" stroke="#3B1F4A" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- cabeza -->
+    <circle cx="70" cy="66" r="32" fill="#F5C9A0" stroke="#3B1F4A" stroke-width="3.5"/>
+    <circle cx="40" cy="70" r="6" fill="#F5C9A0" stroke="#3B1F4A" stroke-width="3"/>
+    <circle cx="100" cy="70" r="6" fill="#F5C9A0" stroke="#3B1F4A" stroke-width="3"/>
+    <!-- gorra -->
+    <path d="M38 56 q2 -34 32 -34 q30 0 32 34z" fill="#6B3A7D" stroke="#3B1F4A" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M60 52 q30 -6 52 4 q4 6 -6 7 q-24 -4 -46 0z" fill="#8E4FA3" stroke="#3B1F4A" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="70" cy="22" r="4" fill="#F6B93B" stroke="#3B1F4A" stroke-width="2.5"/>
+    <text x="56" y="47" font-size="13" font-family="Arial">🎃</text>
+    <!-- gafas de sol -->
+    <rect x="47" y="64" width="20" height="13" rx="6" fill="#3B1F4A"/>
+    <rect x="73" y="64" width="20" height="13" rx="6" fill="#3B1F4A"/>
+    <path d="M67 69 h6" stroke="#3B1F4A" stroke-width="3"/>
+    <path d="M51 67 l6 0" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    <path d="M77 67 l6 0" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+    <!-- cachetes y sonrisa -->
+    <circle cx="50" cy="84" r="5" fill="#F7B6C2" opacity=".8"/>
+    <circle cx="90" cy="84" r="5" fill="#F7B6C2" opacity=".8"/>
+    <path d="M60 86 q10 10 20 0" fill="#fff" stroke="#3B1F4A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- correa y cámara -->
+    <path d="M50 104 L62 132 M90 104 L78 132" stroke="#3B1F4A" stroke-width="3"/>
+    <rect x="52" y="126" width="36" height="25" rx="6" fill="#3B1F4A"/>
+    <rect x="57" y="122" width="10" height="6" rx="2" fill="#3B1F4A"/>
+    <circle cx="70" cy="138.5" r="8.5" fill="#FFF4E4" stroke="#6B3A7D" stroke-width="3"/>
+    <circle cx="70" cy="138.5" r="3.5" fill="#6B3A7D"/>
+    <circle cx="82" cy="131" r="2" fill="#F6B93B"/>
+  </svg>`;
+  document.querySelectorAll(".turista").forEach(el => el.innerHTML = TURISTA_SVG);
+
+  // ====== FONDO OTOÑAL ======
+  const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  (function crearFondo() {
+    if (reducido) return;
+    const cosas = ["🍂", "🎃", "👻", "🍁", "🍂", "✨"];
+    const fondo = document.getElementById("fondo");
+    for (let i = 0; i < 14; i++) {
+      const s = document.createElement("span");
+      s.textContent = cosas[i % cosas.length];
+      s.style.left = Math.random() * 100 + "vw";
+      s.style.fontSize = 16 + Math.random() * 16 + "px";
+      s.style.animationDuration = 14 + Math.random() * 16 + "s";
+      s.style.animationDelay = -Math.random() * 30 + "s";
+      fondo.appendChild(s);
+    }
+  })();
+
+  // ====== NAVEGACIÓN ENTRE PANTALLAS ======
+  function mostrar(id) {
+    document.querySelectorAll(".pantalla").forEach(p => p.classList.remove("activa"));
+    document.getElementById(id).classList.add("activa");
+    window.scrollTo({ top: 0, behavior: reducido ? "auto" : "smooth" });
+  }
+
+  // ====== LLUVIA DE CONFETI ======
+  function lluvia(emojis, cantidad = 40) {
+    if (reducido) cantidad = 8;
+    for (let i = 0; i < cantidad; i++) {
+      const e = document.createElement("span");
+      e.className = "cae";
+      e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      e.style.left = Math.random() * 100 + "vw";
+      e.style.fontSize = 18 + Math.random() * 22 + "px";
+      const dur = 2.4 + Math.random() * 2.2;
+      e.style.animationDuration = dur + "s";
+      e.style.animationDelay = Math.random() * 0.9 + "s";
+      document.body.appendChild(e);
+      setTimeout(() => e.remove(), (dur + 1) * 1000);
+    }
+  }
+
+  // ====== PANTALLA 1 ======
+  document.getElementById("btnEmpezar").addEventListener("click", () => mostrar("p2"));
+
+  // ====== PANTALLA 2: el botón "No" que huye ======
+  const btnSi = document.getElementById("btnSi");
+  const btnNo = document.getElementById("btnNo");
+  const pista = document.getElementById("pista");
+  const frasesNo = [
+    "¿Segura? 🤨",
+    "Piénsalo bien...",
+    "Ese botón está roto 🙃",
+    "Un turista sin guía se pierde, no me hagas eso 🥺",
+    "Ya, en serio, dale al otro",
+    "Mira que te brindo mantecado 🍦",
+    "El 'No' se fue de vacaciones 🏝️",
+    "Ni el fantasmita está de acuerdo 👻",
+    "Ay bendito... 🥹",
+    "Wepa, casi... pero no 😌",
+  ];
+  const pistas = [
+    "Psst... el de la izquierda funciona mejor 👀",
+    "Ese botón es tímido, déjalo tranquilo",
+    "Dato curioso: el 'Sí' está creciendo 📈",
+    "El turista está sudando 😅",
+    "Te tengo paciencia, guía 💛",
+  ];
+  let intentos = 0;
+  let ultimoEscape = 0;
+
+  function escapar(ev) {
+    if (ev) ev.preventDefault();
+    const ahora = Date.now();
+    if (ahora - ultimoEscape < 250) return; // evita doble salto en un mismo toque
+    ultimoEscape = ahora;
+
+    intentos++;
+    btnNo.textContent = frasesNo[(intentos - 1) % frasesNo.length];
+    pista.textContent = pistas[(intentos - 1) % pistas.length];
+
+    // El "Sí" crece (con tope para que no rompa la pantalla)
+    const tam = Math.min(22 + intentos * 3.5, 44);
+    btnSi.style.fontSize = tam + "px";
+    btnSi.style.padding = `${16 + intentos * 2}px ${28 + intentos * 3}px`;
+    if (intentos >= 12) btnSi.style.padding = "40px 64px";
+
+    // Sacamos el "No" al body para moverlo libre por la pantalla
+    if (!btnNo.classList.contains("huyendo")) {
+      const r = btnNo.getBoundingClientRect();
+      btnNo.classList.add("huyendo");
+      document.body.appendChild(btnNo);
+      btnNo.style.left = r.left + "px";
+      btnNo.style.top = r.top + "px";
+    }
+
+    requestAnimationFrame(() => {
+      const ancho = btnNo.offsetWidth, alto = btnNo.offsetHeight;
+      const margen = 12;
+      const maxX = window.innerWidth - ancho - margen;
+      const maxY = window.innerHeight - alto - margen;
+      const si = btnSi.getBoundingClientRect();
+      const actual = btnNo.getBoundingClientRect();
+      let x, y, intento = 0;
+      do {
+        x = margen + Math.random() * Math.max(0, maxX - margen);
+        y = margen + Math.random() * Math.max(0, maxY - margen);
+        intento++;
+        const chocaSi = x < si.right + 10 && x + ancho > si.left - 10 && y < si.bottom + 10 && y + alto > si.top - 10;
+        const muyCerca = Math.hypot(x - actual.left, y - actual.top) < 120;
+        if (!chocaSi && !muyCerca) break;
+      } while (intento < 25);
+      btnNo.style.left = x + "px";
+      btnNo.style.top = y + "px";
+    });
+  }
+
+  btnNo.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") escapar(e); });
+  btnNo.addEventListener("pointerdown", escapar);
+  btnNo.addEventListener("touchstart", escapar, { passive: false });
+  btnNo.addEventListener("click", escapar);
+
+  btnSi.addEventListener("click", () => {
+    btnNo.remove(); // adiós, botón "No" 👋
+    lluvia(["💛", "🎃", "🧡", "💕", "🍂", "👻", "✨"], 60);
+    mostrar("p2b");
+  });
+
+  document.getElementById("btnAlPlan").addEventListener("click", () => mostrar("p3"));
+
+  // ====== PANTALLA 3: el folleto ======
+  const PLANES = [
+    {
+      id: "soul", emoji: "🍦", titulo: "Soul Cream en Caguas",
+      desc: "Algo dulce para alguien igual de dulce. Yo me pido el más grande y después digo que estoy a dieta.",
+      resumen: "Soul Cream en Caguas",
+    },
+    {
+      id: "trampolin", emoji: "🤸", titulo: "Trampoline Park",
+      desc: "Para ver quién de los dos se cae más (spoiler: yo). Prometo no llorar... mucho.",
+      resumen: "Trampoline Park",
+    },
+    {
+      id: "halloween", emoji: "🎃", titulo: "Spots de Halloween en Guaynabo",
+      desc: "Si te asustas, yo te protejo. Si me asusto yo... tú me proteges a mí, ¿verdad? 👻",
+      resumen: "Tour de Halloween en Guaynabo",
+    },
+    {
+      id: "comer", emoji: "🍽️", titulo: "Ir a comer",
+      desc: "Tú escoges el antojo y yo invito. Mofongo, sushi, pizza, pinchos... la guía manda.",
+      resumen: "Ir a comer (tú escoges el antojo)",
+    },
+  ];
+
+  // Planes secretos de noche: solo salen en la ruleta 🌙
+  const PLANES_NOCHE = [
+    {
+      id: "bahia", emoji: "🌊", titulo: "Bahía bioluminiscente en Fajardo", noche: true,
+      desc: "Kayak de noche en agua que brilla. Si nos viramos, por lo menos nos viramos brillando ✨",
+      resumen: "Kayak en la bahía bioluminiscente de Fajardo",
+    },
+    {
+      id: "placita", emoji: "🎶", titulo: "La Placita de Santurce", noche: true,
+      desc: "Música, gente y picadera. Tú bailas de verdad, yo hago que bailo.",
+      resumen: "Janguear en La Placita de Santurce",
+    },
+    {
+      id: "viejosj", emoji: "🏰", titulo: "Viejo San Juan de noche", noche: true,
+      desc: "Adoquines, El Morro iluminado y un mantecado por el camino. Tú guías, yo tiro las fotos 📸",
+      resumen: "Paseo de noche por el Viejo San Juan",
+    },
+    {
+      id: "playa", emoji: "🌙", titulo: "Playa de noche en Isla Verde", noche: true,
+      desc: "Caminar por la orilla con la luna. Si sale un cangrejo, yo grito primero.",
+      resumen: "Caminar por la playa de Isla Verde de noche",
+    },
+    {
+      id: "cine", emoji: "🎬", titulo: "Cine con palomitas", noche: true,
+      desc: "Tú escoges la película. Si es de miedo, yo hago como que no me asusté.",
+      resumen: "Cine con palomitas",
+    },
+    {
+      id: "bolera", emoji: "🎳", titulo: "Noche de bolera", noche: true,
+      desc: "Competencia oficial: el que pierda paga los nachos (ya sé que voy a pagar yo).",
+      resumen: "Noche de bolera",
+    },
+  ];
+  const TODOS = [...PLANES, ...PLANES_NOCHE];
+
+  const estado = { plan: null, dia: null, franja: null, horaExacta: null };
+  const contenedor = document.getElementById("tarjetas");
+
+  PLANES.forEach(p => {
+    const b = document.createElement("button");
+    b.className = "tarjeta";
+    b.dataset.id = p.id;
+    b.innerHTML = `
+      <div class="emoji">${p.emoji}</div>
+      <div>
+        <h3>${p.titulo}</h3>
+        <p>${p.desc}</p>
+        <span class="sello">⭐ Atracción recomendada por la guía oficial: Valeria</span>
+      </div>`;
+    b.addEventListener("click", () => elegirPlan(p.id));
+    contenedor.appendChild(b);
+  });
+
+  const sorpresa = document.createElement("button");
+  sorpresa.className = "tarjeta sorpresa";
+  sorpresa.innerHTML = `
+    <div class="emoji">🎲</div>
+    <div>
+      <h3>Sorpréndeme</h3>
+      <p>¿No te decides? Que la ruleta del destino escoja... y trae <b>planes nocturnos secretos</b> por Puerto Rico 🌙</p>
+      <span class="sello">🎰 Modo aventura</span>
+    </div>`;
+  sorpresa.addEventListener("click", abrirRuleta);
+  contenedor.appendChild(sorpresa);
+
+  let eligiendo = false;
+  function elegirPlan(id) {
+    if (eligiendo) return;
+    eligiendo = true;
+    estado.plan = PLANES.find(p => p.id === id);
+    contenedor.querySelectorAll(".tarjeta").forEach(t => { t.classList.remove("elegida"); t.querySelector(".aprobado")?.remove(); });
+    const t = contenedor.querySelector(`[data-id="${id}"]`);
+    t.classList.add("elegida");
+    const sello = document.createElement("div");
+    sello.className = "aprobado";
+    sello.textContent = "¡Aprobado!";
+    t.appendChild(sello);
+    lluvia([estado.plan.emoji, "✨"], 18);
+    setTimeout(() => { eligiendo = false; irAlDia(); }, 1100);
+  }
+
+  // ====== RULETA ======
+  const overlay = document.getElementById("ruletaOverlay");
+  const slot = document.getElementById("slot");
+  const slotEmoji = document.getElementById("slotEmoji");
+  const slotTitulo = document.getElementById("slotTitulo");
+  const slotDesc = document.getElementById("slotDesc");
+  const slotBotones = document.getElementById("slotBotones");
+  const slotNoche = document.getElementById("slotNoche");
+  let girando = false, ganador = null, ultimo = -1;
+
+  function pintarSlot(p) {
+    slotEmoji.textContent = p.emoji;
+    slotTitulo.textContent = p.titulo;
+    slot.classList.remove("tic"); void slot.offsetWidth; slot.classList.add("tic");
+  }
+
+  function abrirRuleta() {
+    overlay.hidden = false;
+    document.body.style.overflow = "hidden";
+    girar();
+  }
+  function cerrarRuleta() {
+    overlay.hidden = true;
+    document.body.style.overflow = "";
+  }
+
+  function girar() {
+    if (girando) return;
+    girando = true;
+    slotBotones.hidden = true;
+    slotNoche.hidden = true;
+    slotDesc.textContent = "Girando... 🤞";
+    slot.classList.remove("ganador");
+    let final;
+    do { final = Math.floor(Math.random() * TODOS.length); } while (final === ultimo && TODOS.length > 1);
+    ultimo = final;
+    const inicio = Math.floor(Math.random() * TODOS.length);
+    const pasos = TODOS.length * 2 + ((final - inicio + TODOS.length) % TODOS.length);
+    let paso = 0, espera = 55;
+    function siguiente() {
+      pintarSlot(TODOS[(inicio + paso) % TODOS.length]);
+      if (paso === pasos) {
+        ganador = TODOS[final];
+        girando = false;
+        slot.classList.add("ganador");
+        slotDesc.textContent = ganador.desc;
+        slotNoche.hidden = !ganador.noche;
+        slotBotones.hidden = false;
+        lluvia([ganador.emoji, "✨", "💛"], 20);
+        return;
+      }
+      paso++;
+      espera *= 1.1;
+      setTimeout(siguiente, espera);
+    }
+    siguiente();
+  }
+
+  document.getElementById("btnOtraVez").addEventListener("click", girar);
+  document.getElementById("btnCerrarRuleta").addEventListener("click", () => { if (!girando) cerrarRuleta(); });
+  document.getElementById("btnAceptarRuleta").addEventListener("click", () => {
+    if (!ganador) return;
+    estado.plan = ganador;
+    cerrarRuleta();
+    irAlDia();
+  });
+
+  // ====== PANTALLA 4: día y hora ======
+  const HORAS = {
+    tarde: ["12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"],
+    noche: ["6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM"],
+  };
+  const btnConfirmar = document.getElementById("btnConfirmar");
+  const chipsDia = document.querySelectorAll("#dias .chip");
+  const chipsFranja = document.querySelectorAll("#horas .chip");
+  const chipTarde = document.querySelector('#horas .chip[data-valor="tarde"]');
+  const grupoExacta = document.getElementById("grupoHoraExacta");
+  const contHoras = document.getElementById("horasExactas");
+  const horaLibre = document.getElementById("horaLibre");
+  const notaNoche = document.getElementById("notaNoche");
+
+  function revisar() { btnConfirmar.disabled = !(estado.dia && estado.horaExacta); }
+
+  chipsDia.forEach(c => c.addEventListener("click", () => {
+    chipsDia.forEach(x => x.setAttribute("aria-pressed", "false"));
+    c.setAttribute("aria-pressed", "true");
+    estado.dia = c.dataset.valor;
+    revisar();
+  }));
+
+  function marcarFranja(franja) {
+    chipsFranja.forEach(x => x.setAttribute("aria-pressed", String(x.dataset.valor === franja)));
+    estado.franja = franja;
+  }
+
+  function mostrarHoras(franja) {
+    contHoras.innerHTML = "";
+    HORAS[franja].forEach(h => {
+      const b = document.createElement("button");
+      b.className = "chip hora";
+      b.textContent = h;
+      b.setAttribute("aria-pressed", String(estado.horaExacta === h));
+      b.addEventListener("click", () => {
+        contHoras.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", "false"));
+        b.setAttribute("aria-pressed", "true");
+        estado.horaExacta = h;
+        horaLibre.value = "";
+        revisar();
+      });
+      contHoras.appendChild(b);
+    });
+    grupoExacta.hidden = false;
+  }
+
+  chipsFranja.forEach(c => c.addEventListener("click", () => {
+    if (c.disabled) return;
+    if (estado.franja !== c.dataset.valor) estado.horaExacta = null;
+    marcarFranja(c.dataset.valor);
+    mostrarHoras(c.dataset.valor);
+    revisar();
+  }));
+
+  // Hora libre (el reloj del celular): convierte "20:30" en "8:30 PM"
+  horaLibre.addEventListener("change", () => {
+    if (!horaLibre.value) return;
+    const [hh, mm] = horaLibre.value.split(":").map(Number);
+    const ampm = hh >= 12 ? "PM" : "AM";
+    const h12 = hh % 12 === 0 ? 12 : hh % 12;
+    estado.horaExacta = `${h12}:${String(mm).padStart(2, "0")} ${ampm}`;
+    const franja = hh < 12 ? "mañana" : hh < 18 ? "tarde" : "noche";
+    marcarFranja(franja);
+    if (franja !== "mañana") mostrarHoras(franja);
+    contHoras.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", String(x.textContent === estado.horaExacta)));
+    revisar();
+  });
+
+  function irAlDia() {
+    const { plan } = estado;
+    document.getElementById("planElegidoTexto").textContent = `Plan escogido por la guía: ${plan.emoji} ${plan.titulo}`;
+    // Los planes de noche solo se pueden de noche 🌙
+    chipTarde.disabled = !!plan.noche;
+    notaNoche.hidden = !plan.noche;
+    if (plan.noche && estado.franja !== "noche") {
+      estado.horaExacta = null;
+      marcarFranja("noche");
+      mostrarHoras("noche");
+    }
+    revisar();
+    mostrar("p4");
+  }
+
+  document.getElementById("btnVolverPlan").addEventListener("click", () => mostrar("p3"));
+
+  const mayuscula = s => s.charAt(0).toUpperCase() + s.slice(1);
+  // "a la 1:00 PM" pero "a las 8:00 PM"
+  const aLas = h => (h.startsWith("1:") ? "a la " : "a las ") + h;
+
+  btnConfirmar.addEventListener("click", () => {
+    const { plan, dia, franja, horaExacta } = estado;
+    if (!plan || !dia || !horaExacta) return;
+    const iconos = { "mañana": "☀️", tarde: "🌅", noche: "🌙" };
+    const cuando = `el ${dia} en la ${franja} ${aLas(horaExacta)}`;
+    document.getElementById("paseDestino").textContent = `${plan.emoji} ${plan.resumen}`;
+    document.getElementById("paseDia").textContent = mayuscula(dia);
+    document.getElementById("paseHora").textContent = `${horaExacta} ${iconos[franja]}`;
+    document.getElementById("resumen").textContent = `${plan.resumen} ${cuando} ${plan.emoji}`;
+
+    const mensaje = `Guía confirmada para el turista: ${plan.resumen} ${cuando} 🧳`;
+    document.getElementById("btnWhatsapp").href = `https://wa.me/${TELEFONO}?text=${encodeURIComponent(mensaje)}`;
+
+    mostrar("p5");
+    lluvia(["✈️", "💛", "🎃", "🧳", "📸", "🧡", "✨"], 50);
+  });
+
+  document.getElementById("btnCambiar").addEventListener("click", () => mostrar("p3"));
+</script>
+</body>
+</html>
