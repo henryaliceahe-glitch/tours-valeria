@@ -630,7 +630,7 @@
     },
   ];
 
-  // Planes secretos de noche: solo salen en la ruleta 🌙
+  // Planes secretos: solo salen en la ruleta (noche: true = solo de noche)
   const PLANES_NOCHE = [
     {
       id: "bahia", emoji: "🌊", titulo: "Bahía bioluminiscente en Fajardo", noche: true,
@@ -643,9 +643,19 @@
       resumen: "Janguear en La Placita de Santurce",
     },
     {
-      id: "viejosj", emoji: "🏰", titulo: "Viejo San Juan de noche", noche: true,
-      desc: "Adoquines, El Morro iluminado y un mantecado por el camino. Tú guías, yo tiro las fotos 📸",
-      resumen: "Paseo de noche por el Viejo San Juan",
+      id: "billar", emoji: "🎱", titulo: "Jugar billar",
+      desc: "Yo hago como que sé jugar, tú me ganas en dos tiros. Igual me veo bien con el taco.",
+      resumen: "Jugar billar",
+    },
+    {
+      id: "pingpong", emoji: "🏓", titulo: "Ping pong",
+      desc: "Torneo oficial guía vs. turista. Si pierdo, digo que el sol me dio en la cara (aunque estemos bajo techo).",
+      resumen: "Jugar ping pong",
+    },
+    {
+      id: "palmas", emoji: "🌴", titulo: "Palmas del Mar en Humacao",
+      desc: "Brisa, marina y un buen sitio pa' comer frente al mar. El turista se lleva la cámara 📸",
+      resumen: "Escapada a Palmas del Mar en Humacao",
     },
     {
       id: "playa", emoji: "🌙", titulo: "Playa de noche en Isla Verde", noche: true,
@@ -656,11 +666,6 @@
       id: "cine", emoji: "🎬", titulo: "Cine con palomitas", noche: true,
       desc: "Tú escoges la película. Si es de miedo, yo hago como que no me asusté.",
       resumen: "Cine con palomitas",
-    },
-    {
-      id: "bolera", emoji: "🎳", titulo: "Noche de bolera", noche: true,
-      desc: "Competencia oficial: el que pierda paga los nachos (ya sé que voy a pagar yo).",
-      resumen: "Noche de bolera",
     },
   ];
   const TODOS = [...PLANES, ...PLANES_NOCHE];
@@ -689,7 +694,7 @@
     <div class="emoji">🎲</div>
     <div>
       <h3>Sorpréndeme</h3>
-      <p>¿No te decides? Que la ruleta del destino escoja... y trae <b>planes nocturnos secretos</b> por Puerto Rico 🌙</p>
+      <p>¿No te decides? Que la ruleta del destino escoja... y trae <b>planes secretos</b> por Puerto Rico 🌙🎱</p>
       <span class="sello">🎰 Modo aventura</span>
     </div>`;
   sorpresa.addEventListener("click", abrirRuleta);
@@ -757,7 +762,9 @@
         girando = false;
         slot.classList.add("ganador");
         slotDesc.textContent = ganador.desc;
-        slotNoche.hidden = !ganador.noche;
+        const secreto = PLANES_NOCHE.includes(ganador);
+        slotNoche.textContent = ganador.noche ? "🌙 Plan nocturno secreto desbloqueado" : "🔓 Plan secreto desbloqueado";
+        slotNoche.hidden = !secreto;
         slotBotones.hidden = false;
         lluvia([ganador.emoji, "✨", "💛"], 20);
         return;
