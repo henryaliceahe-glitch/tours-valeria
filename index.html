@@ -1114,6 +1114,12 @@
 
   document.getElementById("btnCambiar").addEventListener("click", () => mostrar("p3"));
 
+  // Para probar: abrir el link con ?reiniciar borra el itinerario guardado en ese celular
+  if (new URLSearchParams(location.search).has("reiniciar")) {
+    try { localStorage.removeItem(CLAVE); } catch (e) {}
+    history.replaceState(null, "", location.pathname);
+  }
+
   // Si ya había confirmado antes, la llevamos directo a su itinerario
   const previo = leerGuardado();
   if (previo) {
