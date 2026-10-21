@@ -135,7 +135,9 @@
     font: inherit; font-weight: 800; font-size: 15px; color: var(--morado); background: var(--crema);
     border: 2px solid var(--morado); border-radius: 999px; padding: 8px 14px; min-height: 44px; cursor: pointer;
   }
-  .contador { font-weight: 800; font-size: 14px; color: var(--morado-medio); }
+  .contador { font-weight: 800; font-size: 14px; color: var(--morado-medio); white-space: nowrap; }
+  .paso { white-space: nowrap; }
+  @media (max-width: 360px) { .paso .txt { display: none; } .paso { padding: 8px 16px; } }
   .nota-mapa { font-size: 14px; color: var(--morado-medio); margin: 12px 4px 0; line-height: 1.4; }
 
   /* Pasaporte (igual que en la invitación) */
@@ -194,7 +196,7 @@
     <h2 id="tituloMapa" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Mapa de Puerto Rico</h2>
     <div class="barra-mapa" role="group" aria-label="Vista del mapa">
       <button class="vista" data-vista="isla" aria-pressed="true">🏝️ Toda la isla</button>
-      <button class="vista" data-vista="sj" aria-pressed="false">🏙️ Zona de San Juan</button>
+      <button class="vista" data-vista="sj" aria-pressed="false">🏙️ San Juan</button>
     </div>
     <div class="mapa" id="mapa">
       <svg id="svg" viewBox="0 0 2042 680" preserveAspectRatio="none" aria-hidden="true">
@@ -241,7 +243,8 @@
       texto: "Mantecados de pie porque no había ni un sitio pa' sentarse. Ni falta que hizo: la compañía estaba brutal.",
     },
     {
-      id: "bolera", emoji: "🎳", nombre: "Bolera", lugar: null, color: "#2E6FB7", rot: 5,
+      id: "bolera", emoji: "🎳", nombre: "Bolera", lugar: "Cupey, San Juan",
+      lat: 18.3640, lon: -66.0550, zona: "sj", color: "#2E6FB7", rot: 5,
       texto: 'Récord histórico: la guía por fin le ganó al turista. 🏆<br><i>"Tú siempre me ganas, ya era hora que te ganara."</i><br>(Revancha pendiente 😤)',
     },
     {
@@ -269,7 +272,8 @@
       texto: "Comimos pie 🥧 y el turista le compró flores a la guía 💐. Atracción cinco estrellas.",
     },
     {
-      id: "trampolin", emoji: "🤸", nombre: "Trampoline Park", lugar: null, color: "#1E7A3C", rot: 5, chico: true,
+      id: "trampolin", emoji: "🤸", nombre: "Trampoline Park", lugar: "Bayamón",
+      lat: 18.3850, lon: -66.1600, zona: "sj", color: "#1E7A3C", rot: 5, chico: true,
       texto: "Por poco nos caemos de un sitio bien alto 😱. Sobrevivimos juntos, que es lo que importa.",
     },
   ];
@@ -285,7 +289,7 @@
 
   const VISTAS = {
     isla: { x0: aXY(-67.30, 18.54).x, y0: aXY(-67.30, 18.54).y, x1: aXY(-65.22, 17.90).x, y1: aXY(-65.22, 17.90).y },
-    sj:   { x0: aXY(-66.145, 18.505).x, y0: aXY(-66.145, 18.505).y, x1: aXY(-65.985, 18.345).x, y1: aXY(-65.985, 18.345).y },
+    sj:   { x0: aXY(-66.185, 18.505).x, y0: aXY(-66.185, 18.505).y, x1: aXY(-65.985, 18.345).x, y1: aXY(-65.985, 18.345).y },
   };
 
   const mapa = document.getElementById("mapa");
@@ -335,7 +339,7 @@
     ["Bahía de San Juan", -66.118, 18.441, "mar"], ["Laguna San José", -66.032, 18.4235, "mar"],
     ["Océano Atlántico", -66.07, 18.50, "mar"], ["Condado", -66.066, 18.449, "tierra-txt"],
     ["Santurce", -66.06, 18.437, "tierra-txt"],
-    ["Carolina", -65.995, 18.41, "tierra-txt"], ["Bayamón", -66.135, 18.39, "tierra-txt"],
+    ["Carolina", -65.995, 18.41, "tierra-txt"], ["Bayamón", -66.16, 18.376, "tierra-txt"], ["Cupey", -66.055, 18.356, "tierra-txt"], ["Guaynabo", -66.111, 18.349, "tierra-txt"],
   ].forEach(([txt, lon, lat, tipo]) => {
     const p = aXY(lon, lat), t = document.createElementNS("http://www.w3.org/2000/svg", "text");
     t.setAttribute("class", "rotulo-sj " + tipo);
@@ -408,9 +412,9 @@
       </div>
       <p class="texto">${a.texto}</p>
       <div class="pasos">
-        <button class="paso" id="ant" aria-label="Aventura anterior">◀ Anterior</button>
+        <button class="paso" id="ant" aria-label="Aventura anterior">◀<span class="txt"> Anterior</span></button>
         <span class="contador">${actual + 1} de ${AVENTURAS.length}</span>
-        <button class="paso" id="sig" aria-label="Aventura siguiente">Siguiente ▶</button>
+        <button class="paso" id="sig" aria-label="Aventura siguiente"><span class="txt">Siguiente </span>▶</button>
       </div>`;
     detalle.classList.remove("entra"); void detalle.offsetWidth; detalle.classList.add("entra");
     document.getElementById("ant").addEventListener("click", () => mover(-1));
@@ -425,9 +429,11 @@
     <span class="dato">🛂 ${AVENTURAS.length} aventuras</span>
     <span class="dato">📍 ${enMapa.length} en el mapa</span>
     <span class="dato">🔑 1 turista sin GPS</span>`;
-  document.getElementById("notaMapa").textContent = sinPin.length
-    ? `Sin pin en el mapa: ${sinPin.map(a => `${a.emoji} ${a.nombre}`).join(", ")}. Igual están en el pasaporte 👇`
-    : "";
+  const visibles = sinPin.filter(a => !a.secreto), secretos = sinPin.filter(a => a.secreto);
+  document.getElementById("notaMapa").textContent = [
+    visibles.length ? `Sin pin en el mapa: ${visibles.map(a => `${a.emoji} ${a.nombre}`).join(", ")}.` : "",
+    secretos.length ? `${secretos.map(a => `${a.emoji} ${a.nombre}`).join(", ")}: ubicación clasificada 🤫` : "",
+  ].filter(Boolean).join(" ");
 
   // ====== PASAPORTE ======
   const sellos = document.getElementById("sellos");
